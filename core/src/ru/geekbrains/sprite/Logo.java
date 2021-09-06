@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import ru.gb.base.Sprite;
 import ru.gb.math.Rect;
+// sorry for strange pullrequest. 
 
 public class Logo extends Sprite {
 
