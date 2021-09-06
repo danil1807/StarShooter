@@ -1,8 +1,8 @@
-package ru.geekbrains;
+package ru.gb;
 
 import com.badlogic.gdx.Game;
 
-import ru.geekbrains.screen.MenuScreen;
+import ru.gb.screen.MenuScreen;
 
 public class StarGame extends Game {
 	
