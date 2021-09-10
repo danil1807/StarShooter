@@ -17,7 +17,7 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "ru.geekbrains"
+        applicationId "ru.gb"
         minSdkVersion 14
         targetSdkVersion 31
         versionCode 1
@@ -86,7 +86,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'ru.geekbrains/ru.geekbrains.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'ru.gb/ru.gb.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
