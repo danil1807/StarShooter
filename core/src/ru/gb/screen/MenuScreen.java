@@ -48,6 +48,7 @@ public class MenuScreen extends BaseScreen {
         exitButton = new ExitButton(atlas);
         playButton = new PlayButton(atlas, game);
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+        music.setLooping(true);
         music.play();
     }
 
