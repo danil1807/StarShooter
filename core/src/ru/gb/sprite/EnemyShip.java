@@ -7,37 +7,32 @@ import com.badlogic.gdx.math.Vector2;
 import ru.gb.base.Ship;
 import ru.gb.math.Rect;
 import ru.gb.pool.BulletPool;
+import ru.gb.pool.ExplosionPool;
 
 public class EnemyShip extends Ship {
-    private boolean isAppeared;
-    private boolean firstShotWasDone;
-    private final Vector2 originalSpeed;
-    private final Vector2 ENEMY_VELOCITY_BEFORE_APPEARING = new Vector2(0, -0.3f);
 
+    private static final Vector2 startV = new Vector2(0, -0.3f);
 
-    public EnemyShip(BulletPool bulletPool, Rect worldBounds) {
+    public EnemyShip(BulletPool bulletPool, ExplosionPool explosionPool, Rect worldBounds) {
         this.bulletPool = bulletPool;
+        this.explosionPool = explosionPool;
         this.worldBounds = worldBounds;
         this.bulletV = new Vector2();
         this.bulletPos = new Vector2();
-        this.originalSpeed = new Vector2();
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        if (getTop() < worldBounds.getTop()) {
+            v.set(v0);
+        } else {
+            reloadTimer = 0.8f * reloadInterval;
+        }
         this.bulletPos.set(pos.x, pos.y - getHalfHeight());
-        if (this.getTop() > worldBounds.getTop()){
-            this.isAppeared = false;
-        } else{
-            this.isAppeared = true;
+        if (getBottom() < worldBounds.getBottom()) {
+            destroy();
         }
-        increaseVelocityUntilAppearance();
-        if (isAppeared && !firstShotWasDone){
-            super.reloadTimer = reloadInterval;
-            firstShotWasDone = true;
-        }
-
     }
 
     public void set(
@@ -62,20 +57,21 @@ public class EnemyShip extends Ship {
         this.bulletSound = bulletSound;
         setHeightProportion(height);
         this.hp = hp;
-        v.set(v0);
-        originalSpeed.set(v0);
+        v.set(startV);
     }
 
-    public void setSpeed(Vector2 v0) {
-        this.v0.set(v0);
-        v.set(v0);
+    @Override
+    public void destroy() {
+        super.destroy();
+        reloadTimer = 0f;
     }
 
-    public void increaseVelocityUntilAppearance(){
-        if (this.isAppeared) {
-            this.setSpeed(originalSpeed);
-        } else {
-            this.setSpeed(ENEMY_VELOCITY_BEFORE_APPEARING);
-        }
+    public boolean isCollision(Rect rect) {
+        return !(
+                rect.getRight() < getLeft()
+                || rect.getLeft() > getRight()
+                || rect.getBottom() > getTop()
+                || rect.getTop() < pos.y
+                );
     }
 }
